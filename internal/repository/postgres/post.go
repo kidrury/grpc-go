@@ -13,8 +13,8 @@ type PostRepository struct {
 	pool *pgxpool.Pool
 }
 
-func NewPostRepository(pool *pgxpool.Pool) PostRepository {
-	return PostRepository{
+func NewPostRepository(pool *pgxpool.Pool) *PostRepository {
+	return &PostRepository{
 		pool: pool,
 	}
 }
