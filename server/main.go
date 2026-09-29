@@ -40,6 +40,7 @@ func main() {
 	slog.SetDefault(slog.New(logHandler))
 
 	addr := getEnv("GRPC_ADDR", ":50051")
+	jwtSecret := getEnv("JWT_SECRET", "fallback_jwt_secret")
 	tlsEnabled := getEnv("TLS_ENABLED", "false") == "true"
 	certFile := getEnv("TLS_CERT", "server.crt")
 	keyFile := getEnv("TLS_KEY", "server.key")
@@ -60,7 +61,7 @@ func main() {
 		grpc.ChainUnaryInterceptor(
 			interceptor.Recovery(),
 			interceptor.Log(),
-			interceptor.Auth("secret"),
+			interceptor.Auth(jwtSecret),
 		),
 		grpc.KeepaliveParams(keepalive.ServerParameters{
 			Time:              15 * time.Second,
